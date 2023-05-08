@@ -7,6 +7,8 @@ import { store } from "./store/configureStore";
 import { persistor } from "./store/configureStore";
 
 import Layout from "./modules/Layout.module";
+
+import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
 function App() {

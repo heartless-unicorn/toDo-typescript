@@ -1,4 +1,4 @@
-import Task from "./Task";
+import Task from "./Task.module";
 import Col from "react-bootstrap/Col";
 
 export default function Column() {

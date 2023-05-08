@@ -1,16 +1,19 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface initialState {
+interface Repo {
   todos: Array<Object>;
   inProgress: Array<Object>;
   done: Array<Object>;
 }
-const initialState = {};
+const initialState = {
+  repos: {},
+};
 
 const ActionSlice = createSlice({
   name: "actions",
   initialState,
   reducers: {
+    addRepo(state, action: PayloadAction<String>) {},
     // addCity(state, action: PayloadAction<String>) {
     //   state.actions.push(action.payload);
     // },
