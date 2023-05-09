@@ -6,9 +6,9 @@ interface Issue {
   comments: number;
 }
 interface Repo {
-  open: Array<Object>;
-  progress: Array<Object>;
-  done: Array<Object>;
+  open: Array<Issue>;
+  progress: Array<Issue>;
+  done: Array<Issue>;
 }
 interface NamedRepo {
   [key: string]: Repo;

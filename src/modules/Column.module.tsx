@@ -1,10 +1,10 @@
 import Task from "./Task.module";
 import Col from "react-bootstrap/Col";
 
-import type { Repo } from "../helpers/interfaces";
+import type { Repo, Issue } from "../helpers/interfaces";
 interface issueStatusProp {
   name: string;
-  issues: Object[] | null;
+  issues: Issue[] | null;
 }
 
 export default function Column(props: issueStatusProp) {
@@ -12,9 +12,9 @@ export default function Column(props: issueStatusProp) {
   if (props.issues) {
     return (
       <Col>
-        <Task />
-        <Task />
-        <Task />
+        {props.issues.map((el) => {
+          return <Task description={el} key={el.id} />;
+        })}
       </Col>
     );
   } else {
