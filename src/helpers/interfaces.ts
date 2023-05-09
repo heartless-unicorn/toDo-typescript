@@ -5,4 +5,12 @@ interface Issue {
   created_at: Date;
   comments: number;
 }
-export type { Issue };
+interface Repo {
+  open: Array<Object>;
+  progress: Array<Object>;
+  done: Array<Object>;
+}
+interface NamedRepo {
+  [key: string]: Repo;
+}
+export type { Issue, Repo, NamedRepo };

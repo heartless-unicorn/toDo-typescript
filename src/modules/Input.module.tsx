@@ -4,13 +4,16 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
 import { getIssuesHandler } from "./handlers/getIssuesHandler";
-import type { Issue } from "../helpers/interfaces";
 
-export default function Input() {
+import { addRepo } from "../store/action-slice";
+import { useAppDispatch } from "../store/configureStore";
+
+export default function Input(props: { issueGetter: (path: string) => void }) {
   const [link, setLink] = useState<string>("");
-  const [issues, setIssues] = useState<Issue[]>();
+
   const [error, setError] = useState<boolean>(false);
-  useEffect(() => {}, [issues]);
+
+  const dispatch = useAppDispatch();
 
   const handleInput = function (event: ChangeEvent) {
     const target = event.currentTarget as HTMLInputElement;
@@ -18,10 +21,12 @@ export default function Input() {
   };
   const handleSubmit = async function (event: SyntheticEvent) {
     event.preventDefault();
-    await getIssuesHandler(link)
+    const repo: string = link.split("/").at(-1) ?? "";
+    const owner: string = link.split("/").at(-2) ?? "";
+    await getIssuesHandler(owner, repo)
       .then((response) => {
-        console.log(response);
-        setIssues(response);
+        dispatch(addRepo(response));
+        props.issueGetter(`${owner}-${repo}`);
       })
       .catch(() => setError(true));
   };
