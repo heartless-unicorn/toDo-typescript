@@ -12,12 +12,17 @@ export default function Column(props: issueStatusProp) {
   if (props.issues) {
     return (
       <Col>
+        <h1>{props.name}</h1>
         {props.issues.map((el) => {
           return <Task description={el} key={el.id} />;
         })}
       </Col>
     );
   } else {
-    return <div>No data</div>;
+    return (
+      <Col>
+        <h1>{props.name}</h1>
+      </Col>
+    );
   }
 }

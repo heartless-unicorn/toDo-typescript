@@ -1,4 +1,4 @@
-import { octokit } from "../../helpers/constants";
+import { octokit } from "../../helpers/key";
 import type { Issue, NamedRepo } from "../../helpers/interfaces";
 
 export async function getIssuesHandler(

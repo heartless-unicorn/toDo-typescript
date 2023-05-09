@@ -35,7 +35,8 @@ export default function Layout() {
       {issues && (
         <p>
           {path[0]}
-          {">"} {path[1]}
+          {">"}
+          {path[1]}
         </p>
       )}
 
