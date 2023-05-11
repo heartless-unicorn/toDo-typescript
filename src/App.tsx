@@ -3,6 +3,9 @@ import React from "react";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+
 import { store } from "./store/configureStore";
 import { persistor } from "./store/configureStore";
 
@@ -16,7 +19,9 @@ function App() {
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <div className="App">
-          <Layout />
+          <DndProvider backend={HTML5Backend}>
+            <Layout />
+          </DndProvider>
         </div>
       </PersistGate>
     </Provider>

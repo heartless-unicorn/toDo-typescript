@@ -30,7 +30,7 @@ export async function getIssuesHandler(
           name: el.title,
           id: el.number,
           creator_id: el.user.login,
-          created_at: new Date(el.created_at),
+          created_at:el.created_at,
           comments: el.comments,
         };
         if (el.state === "closed") {
@@ -43,6 +43,7 @@ export async function getIssuesHandler(
           }
         }
       });
+
       return repInfo;
     });
 }

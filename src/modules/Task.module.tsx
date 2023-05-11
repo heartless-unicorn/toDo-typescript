@@ -1,12 +1,34 @@
 import type { Issue } from "../helpers/interfaces";
+import { ItemType, PathContext } from "../helpers/constants";
 
-export default function Task(props: { description: Issue }) {
+import { useDrag } from "react-dnd";
+
+import "./styles/Task.css";
+import { useContext } from "react";
+
+export default function Task(props: { description: Issue; position: string }) {
+  const { issuesPath } = useContext(PathContext);
+
   const issueInfo = props.description;
-  //{name: 'Flow upgrade to 0.205.1', id: 26796, creator_id: 'kassens', created_at: Tue May 09 2023 02:01:57 GMT+0200 (Восточная Европа, стандартное время), comments: 1}
-  const date = new Date().getDate() - issueInfo.created_at.getDate();
+  const date = new Date().getDate() - new Date(issueInfo.created_at).getDate();
+
+  const [{ isDragging }, drag] = useDrag(
+    () => ({
+      type: ItemType.CARD,
+      item: {
+        id: props.description.id,
+        curPosition: props.position,
+        path: issuesPath,
+      },
+      collect: (monitor) => ({
+        isDragging: !!monitor.isDragging(),
+      }),
+    }),
+    [props.description.id]
+  );
 
   return (
-    <div>
+    <div className="Task" ref={drag}>
       <p>{issueInfo.name}</p>
       <p>{issueInfo.id}</p>
       <p>

@@ -2,7 +2,7 @@ interface Issue {
   name: string;
   id: number;
   creator_id: string;
-  created_at: Date;
+  created_at: string;
   comments: number;
 }
 interface Repo {
@@ -13,4 +13,16 @@ interface Repo {
 interface NamedRepo {
   [key: string]: Repo;
 }
-export type { Issue, Repo, NamedRepo };
+
+interface movebleItem {
+  id: string;
+  curPosition: string;
+  path: string;
+  source: string;
+}
+
+interface Context {
+  issuesPath: string;
+  setIssuesPath: React.Dispatch<React.SetStateAction<string>>;
+}
+export type { Issue, Repo, NamedRepo, movebleItem, Context };

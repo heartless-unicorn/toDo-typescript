@@ -1,19 +1,29 @@
-import { useState, useEffect, SyntheticEvent, ChangeEvent } from "react";
+import {
+  useState,
+  useEffect,
+  SyntheticEvent,
+  ChangeEvent,
+  useContext,
+} from "react";
 
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
 import { getIssuesHandler } from "./handlers/getIssuesHandler";
+import { PathContext } from "../helpers/constants";
 
-import { addRepo } from "../store/action-slice";
-import { useAppDispatch } from "../store/configureStore";
+import { addRepo, selectActions } from "../store/action-slice";
+import { useAppDispatch, useAppSelector } from "../store/configureStore";
 
-export default function Input(props: { issueGetter: (path: string) => void }) {
+export default function Input() {
   const [link, setLink] = useState<string>("");
 
   const [error, setError] = useState<boolean>(false);
 
   const dispatch = useAppDispatch();
+  const selector = useAppSelector(selectActions);
+
+  const { issuesPath, setIssuesPath } = useContext(PathContext);
 
   const handleInput = function (event: ChangeEvent) {
     const target = event.currentTarget as HTMLInputElement;
@@ -23,12 +33,15 @@ export default function Input(props: { issueGetter: (path: string) => void }) {
     event.preventDefault();
     const repo: string = link.split("/").at(-1) ?? "";
     const owner: string = link.split("/").at(-2) ?? "";
-    await getIssuesHandler(owner, repo)
-      .then((response) => {
-        dispatch(addRepo(response));
-        props.issueGetter(`${owner}-${repo}`);
-      })
-      .catch(() => setError(true));
+    setIssuesPath(`${owner}-${repo}`);
+
+    if (!(`${owner}-${repo}` in selector)) {
+      await getIssuesHandler(owner, repo)
+        .then((response) => {
+          dispatch(addRepo(response));
+        })
+        .catch(() => setError(true));
+    }
   };
 
   return (

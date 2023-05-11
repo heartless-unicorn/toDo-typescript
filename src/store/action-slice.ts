@@ -1,11 +1,15 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import type { NamedRepo, Repo } from "../helpers/interfaces";
+import type { movebleItem, NamedRepo, Repo } from "../helpers/interfaces";
 
 const initialState = {
   repos: {},
 };
-// type key = keyof NamedRepo;
+interface initialState {
+  repos: {
+    [name: string]: any;
+  };
+}
 const ActionSlice = createSlice({
   name: "actions",
   initialState,
@@ -18,8 +22,24 @@ const ActionSlice = createSlice({
         [repoName]: value,
       };
     },
+    moveItem(state: initialState, action: PayloadAction<movebleItem>) {
+      const positionInfo = action.payload;
+      const path: string = positionInfo.path;
+      const curPosition: string = positionInfo.curPosition;
+      const moveblePosition: string = positionInfo.source;
+
+      state.repos[path][curPosition] = state.repos[path][curPosition].filter(
+        (el: any) => {
+          if (el.id === positionInfo.id) {
+            state.repos[path][moveblePosition].push(el);
+            return false;
+          }
+          return el.id !== positionInfo.id;
+        }
+      );
+    },
   },
 });
-export const { addRepo } = ActionSlice.actions;
+export const { addRepo, moveItem } = ActionSlice.actions;
 export const selectActions = (state: any) => state.repos;
 export default ActionSlice.reducer;
