@@ -1,19 +1,14 @@
-import {
-  useState,
-  useEffect,
-  SyntheticEvent,
-  ChangeEvent,
-  useContext,
-} from "react";
+import { useState, SyntheticEvent, ChangeEvent, useContext } from "react";
 
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
+import { Alert, Col, Row, Button, Form } from "react-bootstrap";
 
 import { getIssuesHandler } from "./handlers/getIssuesHandler";
 import { PathContext } from "../helpers/constants";
 
 import { addRepo, selectActions } from "../store/action-slice";
 import { useAppDispatch, useAppSelector } from "../store/configureStore";
+
+import "./styles/Input.css";
 
 export default function Input() {
   const [link, setLink] = useState<string>("");
@@ -23,7 +18,7 @@ export default function Input() {
   const dispatch = useAppDispatch();
   const selector = useAppSelector(selectActions);
 
-  const { issuesPath, setIssuesPath } = useContext(PathContext);
+  const { setIssuesPath } = useContext(PathContext);
 
   const handleInput = function (event: ChangeEvent) {
     const target = event.currentTarget as HTMLInputElement;
@@ -31,6 +26,7 @@ export default function Input() {
   };
   const handleSubmit = async function (event: SyntheticEvent) {
     event.preventDefault();
+    setError(false);
     const repo: string = link.split("/").at(-1) ?? "";
     const owner: string = link.split("/").at(-2) ?? "";
     setIssuesPath(`${owner}-${repo}`);
@@ -40,18 +36,30 @@ export default function Input() {
         .then((response) => {
           dispatch(addRepo(response));
         })
-        .catch(() => setError(true));
+        .catch(() => {
+          setError(true);
+          console.log("Input Error");
+        });
     }
   };
 
   return (
-    <div>
+    <div className="Input">
       <Form onSubmit={handleSubmit}>
-        <Form.Control type="search" onChange={handleInput} />
-        <Button type="submit" variant="primary">
-          Search
-        </Button>
+        <Row>
+          <Col>
+            <Form.Control
+              type="search"
+              onChange={handleInput}
+              placeholder="https://github.com/facebook/react"
+            />
+          </Col>
+          <Col>
+            <Button type="submit">Search</Button>
+          </Col>
+        </Row>
       </Form>
+      {error && <Alert variant="danger">Please enter the correct url</Alert>}
     </div>
   );
 }

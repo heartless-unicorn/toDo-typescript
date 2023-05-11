@@ -29,11 +29,12 @@ export default function Task(props: { description: Issue; position: string }) {
 
   return (
     <div className="Task" ref={drag}>
-      <p>{issueInfo.name}</p>
-      <p>{issueInfo.id}</p>
-      <p>
-        {issueInfo.creator_id}, {issueInfo.comments},{" "}
-        {date === 0 ? "today" : `${date} day(s) ago`}
+      <h4>{issueInfo.name}</h4>
+      <p> {date === 0 ? "today" : `${date} day(s) ago`}</p>
+      <p>Id: {issueInfo.id}</p>
+      <p className="bottom-info">
+        <span> Comments: {issueInfo.comments}</span>{" "}
+        <span className="nickname"> {issueInfo.creator_id}</span>
       </p>
     </div>
   );

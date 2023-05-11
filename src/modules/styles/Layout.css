@@ -1,0 +1,16 @@
+.Layout {
+  padding: 30px;
+}
+.path-box {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+.Layout a {
+  text-decoration: none;
+
+  text-transform: capitalize;
+  color: white;
+}
+.Layout a:hover {
+  color: white;
+}

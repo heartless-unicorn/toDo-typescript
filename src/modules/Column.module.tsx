@@ -1,16 +1,16 @@
-import { useContext, useEffect } from "react";
-
 import Task from "./Task.module";
 import Col from "react-bootstrap/Col";
 
 import { useDrop } from "react-dnd";
 
-import type { Issue, movebleItem } from "../helpers/interfaces";
-import { ItemType, PathContext } from "../helpers/constants";
-
-import "./styles/Column.css";
 import { useAppDispatch } from "../store/configureStore";
 import { moveItem } from "../store/action-slice";
+
+import type { Issue } from "../helpers/interfaces";
+import { ItemType } from "../helpers/constants";
+
+import "./styles/Column.css";
+
 interface issueStatusProp {
   name: string;
   issues: Issue[] | null;
@@ -27,7 +27,7 @@ export default function Column(props: issueStatusProp) {
   }) {
     const result = Object(item);
     result.source = props.name;
-
+    console.log(result);
     dispatch(moveItem(result));
   };
   const [{ isOver }, drop] = useDrop(() => ({

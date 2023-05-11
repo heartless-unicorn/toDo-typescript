@@ -3,43 +3,48 @@ import { createContext, useEffect, useState } from "react";
 import Column from "./Column.module";
 import Input from "./Input.module";
 
+import type { Repo } from "../helpers/interfaces";
+import { PathContext } from "../helpers/constants";
+
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 
 import { selectActions } from "../store/action-slice";
 import { useAppSelector } from "../store/configureStore";
 
-import type { Repo } from "../helpers/interfaces";
-import { PathContext } from "../helpers/constants";
+import "./styles/Layout.css";
 
 export default function Layout() {
-  const [issuesPath, setIssuesPath] = useState("");
+  const [issuesPath, setIssuesPath] = useState<string>("");
   const [path, setPath] = useState<String[]>([]);
   const [data, setData] = useState<Repo | null>();
 
   const selector = useAppSelector(selectActions);
   useEffect(() => {
     if (issuesPath) {
-      const arr = issuesPath.split("-");
-      setPath(arr);
       const storeData = selector[issuesPath];
-
-      setData(storeData);
+      if (storeData) {
+        const arr = issuesPath.split("-");
+        setPath(arr);
+        setData(storeData);
+      }
     }
   }, [issuesPath, selector]);
 
   return (
-    <Container>
+    <Container className="Layout">
       <PathContext.Provider value={{ issuesPath, setIssuesPath }}>
         <Input />
-        {issuesPath && (
-          <div>
+        {data && (
+          <div className="path-box">
             <a href={`https://github.com/${path[0]}`} target="blank">
               {" "}
               {path[0]}
-            </a>
-
-            {">"}
+            </a>{" "}
+            {<FontAwesomeIcon icon={faArrowRight} />}
             <a href={`https://github.com/${path[0]}/${path[1]}`} target="blank">
               {" "}
               {path[1]}

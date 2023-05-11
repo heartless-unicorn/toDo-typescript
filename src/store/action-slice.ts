@@ -27,7 +27,9 @@ const ActionSlice = createSlice({
       const path: string = positionInfo.path;
       const curPosition: string = positionInfo.curPosition;
       const moveblePosition: string = positionInfo.source;
-
+      if (curPosition === moveblePosition) {
+        return state;
+      }
       state.repos[path][curPosition] = state.repos[path][curPosition].filter(
         (el: any) => {
           if (el.id === positionInfo.id) {
